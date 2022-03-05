@@ -8,22 +8,17 @@ const Home = ({ results }) => {
   const router = useRouter();
   const onClick = (id, title) => {
     // router.push(`/movies/${id}`);
-    router.push(
-      {
-        pathname: `/movies/${id}`,
-        query: {
-          title,
-        },
-      },
-      `/movies/${id}` // 브라우져에서 마스킹 하기
-    );
+    router.push(`/movies/${title}/${id}`);
   };
 
   return (
     <div className="container">
       <Seo title="Home" />
       {results?.map((movie) => (
-        <Link href={`/movies/${movie.id}`} key={movie.id}>
+        <Link
+          href={`/movies/${movie.original_title}/${movie.id}`}
+          key={movie.id}
+        >
           <a>
             <div
               onClick={() => onClick(movie.id, movie.original_title)}
