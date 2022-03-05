@@ -1,15 +1,42 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
 import Seo from "../components/Seo";
+import Link from "next/link";
 
 const Home = ({ results }) => {
+  const router = useRouter();
+  const onClick = (id, title) => {
+    // router.push(`/movies/${id}`);
+    router.push(
+      {
+        pathname: `/movies/${id}`,
+        query: {
+          title,
+        },
+      },
+      `/movies/${id}` // 브라우져에서 마스킹 하기
+    );
+  };
+
   return (
-    <div>
+    <div className="container">
       <Seo title="Home" />
       {results?.map((movie) => (
-        <div className="movie" key={movie.id}>
-          <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
-          <h4>{movie.original_title}</h4>
-        </div>
+        <Link href={`/movies/${movie.id}`} key={movie.id}>
+          <a>
+            <div
+              onClick={() => onClick(movie.id, movie.original_title)}
+              className="movie"
+              style={{ width: "100%" }}
+            >
+              <img
+                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+              />
+              <h4>{movie.original_title}</h4>
+            </div>
+          </a>
+        </Link>
       ))}
       <style jsx>{`
         .container {
@@ -17,6 +44,9 @@ const Home = ({ results }) => {
           grid-template-columns: 1fr 1fr;
           padding: 20px;
           gap: 20px;
+        }
+        .movie {
+          cursor: pointer;
         }
         .movie img {
           max-width: 100%;
